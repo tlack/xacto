@@ -1,6 +1,7 @@
 # xacto
 
-Xacto is a tool for manipulating data with Javascript. 
+Xacto is a tool for manipulating data with Javascript. It is heavily inspired
+by Q/Kdb and Mathematica.
 
 Work with your data at a high level, using a uniform set of functions that work
 against different types of in-memory values, files, remote resources, etc.
@@ -41,8 +42,8 @@ and pure values.
 Goals:
 
 * Use as few global "verbs" as possible - have one understood meaning of each
+* Make each verb behave logically for each type of data/collection (find the path of least surprise)
 * Add the first level of required sugar to make it edible by humans
-* Find a path of least surprise
 
 Generally, X's verbs take the "data" or "from" thing as the first argument with the
 operation or value as the second.

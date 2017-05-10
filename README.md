@@ -1,8 +1,6 @@
 # xacto
 
-Xacto is a tool for data. 
-
-Xacto provides simple and expressive interface for all sorts of different data. 
+Xacto is a tool for manipulating data with Javascript. 
 
 Work with your data at a high level, using a uniform set of functions that work
 against different types of in-memory values, files, remote resources, etc.

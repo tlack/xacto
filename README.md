@@ -1,10 +1,15 @@
 # xacto
 
-Xacto is a tool for manipulating data with Javascript. It is heavily inspired
-by Q/Kdb and Mathematica.
+Xacto is a tool for manipulating data with Javascript which is heavily inspired
+by Q/Kdb and Mathematica. It includes a general API and an in-memory database
+implementation.
 
 Work with your data at a high level, using a uniform set of functions that work
 against different types of in-memory values, files, remote resources, etc.
+
+## Status
+
+Pretty new. Don't trust with your important data just yet.
 
 ## Features
 
@@ -105,9 +110,16 @@ Negative `n` will remove items from the end of `value`.
 
 Prints value and returns it; use in the middle of expressions to debug values.
 
+```
+> let z=emit(get_thing(),'thing result')*4+emit(other_func(),'other')
+thing result 6
+other 12
+36
+```
+
 ### each(x, f, opts)
 
-For each item in x, returns `f(x[i], i, opts)`.
+Returns an array of `f(x[i], i, opts)` for each item in x.
 
 Works with arrays, objects, tables, and Maps.
 
@@ -140,6 +152,10 @@ For dictionaries (objects), returns the keys.
 
 For lists, returns an array of its indices.
 
+### get(collection, index)
+
+Return the `index`th item in `collection`. `index` can also be an array. Works for all types.
+
 ### handler(filename)
 
 Returns the Xacto handler for a given filename's extension. Mostly used
@@ -153,13 +169,15 @@ Returns the first item in value
 
 Appends `value` to `collection`
 
+This works for tables, arrays, etc.
+
 ### inter(x, y)
 
-Returns the common values in `x` and `y`.
+Intersection. Returns the common values in `x` and `y`.
 
 ### member(collection, value)
 
-Returns true if `value` is in `collection`.
+Membership test. Returns true if `value` is in `collection`.
 
 ### last(value)
 
@@ -199,14 +217,19 @@ Return the lower of m and n
 
 ### rand(n)
 
-Returns a randominteger frm 0..n
+Returns a random integer from (0..n]
 
 ### range(min, max, func?)
 
-Returns an array of integers from min to max.
+Returns an array of integers from min to max-1.
 
-Optionally calls func(i) for each integer. You can use this to apply a range of
-numbers to a function.
+Optionally calls `func(i)` for each integer. You can use this to apply a range
+of numbers to a function, generate test data, etc.
+
+### sel(collection, predicate)
+
+Select the items in `collection` matching `predicate`. Works for most types.
+See querying docs below.
 
 ### take(value, n)
 
@@ -263,7 +286,8 @@ Xacto' file handling features come in the form of two functions: `load` and `sav
 
 ```
 > X.save("./test.json",myData)
-> X.load("./test.json")
+> myData2=X.load("./test.json")
+> X.assert(X.equal(myData,myData2),"ugh")
 ```
 
 ### Open the database
@@ -289,11 +313,9 @@ handy in some situations) or via a table reference.
 ```
 	X.ins('students', {name:'Tom',age:38})
 	// alternative forms:
-	X.students.ins({name,'Arca',age:3})
-	students.ins({name:'Cricket',age:X.MAX})
+	X.students.ins({name,'Arca',age:4*7})
+	students.ins({name:'Cricket',age:4})
 ```
-
-`X.MAX` is a symbol or placeholder value that `
 
 ### Query (sel)
 

@@ -215,6 +215,23 @@ Return the higher of m and n
 
 Return the lower of m and n
 
+### proj(func, x?, y?, z?)
+
+Similar to currying. Returns a version of `func` with arguments already applied. Use
+undefined to indicate an empty value that must be applied when calling the resulting
+function.
+
+```
+> const X=require('./xacto')();
+> const f=X.proj(function(a, b, c){ return 'Hello '+a+', '+b+', '+c }, 'Tom', undefined, 'Tyler')
+> f
+[Function: bound ]
+> f('Arca')
+'Hello Tom, Arca, undefined'
+```
+
+Currently only allows work with functions with three arguments or less.
+
 ### rand(n)
 
 Returns a random integer from (0..n]

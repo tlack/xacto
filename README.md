@@ -33,13 +33,16 @@ Warning: currently pollutes globals. Workin on it
 
 ### Speed and brutality
 
+For my own purposes I need this to be pretty fast so that was a primary concern
+when designing the system.
+
+- many functions use plain ole for(;;;) - still faster than all those lovely
+	callbacks, but makes the code less terse than I'd like
 - uses typed arrays to store integer values (and hopefully floats and other
 	types soon; see below)
 - uses Map instead of objects for table column handling - this should allow for
 	tables with almsot any number of columns
 - uses Set for internal row lists
-- many functions use plain ole for(;;;) - still faster than all those lovely
-	callbacks
 
 ## General API 
 

@@ -18,7 +18,9 @@ Pretty new. Some glaring omissions. Don't trust with your important data just ye
 
 - One size does not fit all. I want to be able to make websites that have app-tuned customizable data stores. 
 
-- Every external dependency is a risk factor. Remove as many as possible. I want to work without MySQL or Redis or anything but Node itself.
+- Every external dependency is a risk factor. Remove as many as possible. I
+	want to work without MySQL or Redis or 500mb of npms or anything but Node
+	itself.
 
 ## Features
 
@@ -369,6 +371,9 @@ Major bugs:
 - currently pollutes globals. trying to find a better structure
 - enumerations (columns grouped by unique values) do not currently work.
 - logger needs more testing and a freshening up
+- there's something odd about converting some TypedArrays to buffers for
+	loading/storing. In particular, floats seem to be saved as ints. I'm still
+	looking into this.
 
 ### Misc notes
 

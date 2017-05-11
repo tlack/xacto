@@ -227,7 +227,7 @@ function.
 > f
 [Function: bound ]
 > f('Arca')
-'Hello Tom, Arca, undefined'
+'Hello Tom, Arca, Tyler'
 ```
 
 Currently only allows work with functions with three arguments or less.
@@ -284,6 +284,11 @@ Shortcut for Array.isArray
 ### tbox(value)
 
 Returns true if `value` is a collection type (object or array)
+
+### tdict(value)
+
+Return true if `value` is an object, but not an array. Eventually this should
+also try to ensure this is a "flat" object with no functions as members, etc.
 
 ### tfunc(value)
 

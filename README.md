@@ -11,6 +11,8 @@ against different types of in-memory values, files, remote resources, etc.
 
 Pretty new. Don't trust with your important data just yet.
 
+Warning: currently pollutes globals. Workin on it
+
 ## Features
 
 - Convenience functions that abstract away JavaScript's frustratingly patchy

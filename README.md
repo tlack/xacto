@@ -38,6 +38,7 @@ Pretty new. Some glaring omissions. Don't trust with your important data just ye
 	familiar style, with minimal state. 
 - Zero dependencies (at least for now)
 - Not too "objecty" (prototypal inheritance is leading cause of teen suicide)
+- Code fairly dense, easy to scan, designed for trendy wide screens
 
 ### Speed and brutality
 
@@ -45,12 +46,12 @@ For my own purposes I need this to be pretty fast so that was a primary concern
 when designing the system.
 
 - many functions use plain ole for(;;;) - still faster than all those lovely
-	callbacks, but makes the code less terse than I'd like
+	callbacks, but makes the code less terse and flexible than I'd like
 - uses typed arrays to store integer values (and hopefully floats and other
 	types soon; see below)
-- uses Map instead of objects for table column handling - this should allow for
-	tables with almsot any number of columns
-- uses Set for internal row lists
+- uses `Map` instead of objects for table column handling - this should allow for
+	tables with almost any number of columns which creates interesting opportunities
+- uses `Set` for internal row lists in critical sections
 
 ## General API 
 
@@ -132,9 +133,14 @@ other 12
 
 ### each(x, f, opts)
 
-Returns an array of `f(x[i], i, opts)` for each item in x.
+For arrays and tables: returns an array of `f(x[i],i,opts)` for each item in x.
 
-Works with arrays, objects, tables, and Maps.
+For objects and Maps: returns `{k:f(x[k],k,opts), j:f(x[j],j,opts), ...}` 
+
+```
+> X.each({name:'Arca',species:'super cute pomeranian'},function(x){return x.toUpperCase()})
+{ name: 'ARCA', species: 'SUPER CUTE POMERANIAN' }
+```
 
 ### equal(x, y)
 
@@ -261,6 +267,12 @@ of numbers to a function, generate test data, etc.
 Select the items in `collection` matching `predicate`. Works for most types.
 See querying docs below.
 
+### sum(array, nullvalue?)
+
+Sum array. Numbers only for now. Only arrays for now. 
+
+If `nullvalue` supplied, string conversion will be attempted.
+
 ### take(value, n)
 
 Return the first `n` items in `value`.
@@ -312,6 +324,10 @@ Returns true if `value` is a function
 Updates `key` in `collection` with value.
 
 `key` can be an array of indices. Each will get `value`.
+
+### X.U
+
+Shortcut for undefined. I hate typing.
 
 ## File and Database API
 

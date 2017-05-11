@@ -9,9 +9,7 @@ against different types of in-memory values, files, remote resources, etc.
 
 ## Status
 
-Pretty new. Don't trust with your important data just yet.
-
-Warning: currently pollutes globals. Workin on it
+Pretty new. Don't trust with your important data just yet. See "Bugs" below.
 
 ## Features
 
@@ -356,6 +354,14 @@ handy in some situations) or via a table reference.
 ```
 > X.table('recipes',{id:'int',title:'string',ingredients:'any'},[X.mem, X.logger])
 ```
+
+## Bugs
+
+Major bugs:
+
+- currently pollutes globals. trying to find a better structure
+- enumerations (columns grouped by unique values) do not currently work.
+- logger needs more testing and a freshening up
 
 ### Misc notes
 

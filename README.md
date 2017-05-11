@@ -11,22 +11,30 @@ against different types of in-memory values, files, remote resources, etc.
 
 Pretty new. Don't trust with your important data just yet. See "Bugs" below.
 
+## Motivations
+
+- JavaScript really sucks but we're stuck with it. I want to write JS that's as concise and meaningful as [K/Q](http://kx.com). 
+
+- One size does not fit all. I want to be able to make websites that have app-tuned customizable data stores. 
+
+- Every external dependency is a risk factor. Remove as many as possible. I want to work without MySQL or Redis or anything but Node itself.
+
+So far I've failed at all three goals, but read on..
+
 ## Features
 
 - Convenience functions that abstract away JavaScript's frustratingly patchy
-	standard library
+	standard library and perform in a uniform way for most data types.
 - Column-oriented in-memory tables
+- Updates logged to disk and replayed at startup
 - TypedArray vector columns for integers (byte, short, int)
 - Regular Javascript value columns (can contain any type, including other tables)
 - Create your own table types
 - Create your own column types
 - Fast-ish, or at least written with performance in mind
 - Regular Javascript-style functions instead of SQL or homegrown query languages.
-- Xacto instances are isolated so you can do all kinds of weird stuff in them
-	without infecting the rest of your database.
-- Updates logged to disk and replayed at startup
 - No magic or Javascript puffery; simple, concise code, written in a crude but
-	familiar style. 
+	familiar style, with minimal state. 
 - Zero dependencies (at least for now).
 
 ### Speed and brutality

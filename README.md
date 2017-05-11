@@ -36,7 +36,8 @@ Pretty new. Some glaring omissions. Don't trust with your important data just ye
 - Regular Javascript-style functions instead of SQL or homegrown query languages.
 - No magic or Javascript puffery; simple, concise code, written in a crude but
 	familiar style, with minimal state. 
-- Zero dependencies (at least for now).
+- Zero dependencies (at least for now)
+- Not too "objecty" (prototypal inheritance is leading cause of teen suicide)
 
 ### Speed and brutality
 

@@ -1,25 +1,24 @@
 # xacto
 
 Xacto is a tool for manipulating data with Javascript which is heavily inspired
-by Q/Kdb and Mathematica. It includes a general API and an in-memory database
-implementation.
+by the amazing [Q/Kdb](http://kx.com) and Mathematica. It includes a general
+API and an in-memory database implementation.
 
 Work with your data at a high level, using a uniform set of functions that work
-against different types of in-memory values, files, remote resources, etc.
+the same way against different types of in-memory values, files, remote
+resources (not yet implemented), etc.
 
 ## Status
 
-Pretty new. Don't trust with your important data just yet. See "Bugs" below.
+Pretty new. Some glaring omissions. Don't trust with your important data just yet. See "Bugs" below.
 
 ## Motivations
 
-- JavaScript really sucks but we're stuck with it. I want to write JS that's as concise and meaningful as [K/Q](http://kx.com). 
+- JavaScript really sucks but we're stuck with it. I want to write JS that's as concise and meaningful as [Q by Kx](http://kx.com). 
 
 - One size does not fit all. I want to be able to make websites that have app-tuned customizable data stores. 
 
 - Every external dependency is a risk factor. Remove as many as possible. I want to work without MySQL or Redis or anything but Node itself.
-
-So far I've failed at all three goals, but read on..
 
 ## Features
 

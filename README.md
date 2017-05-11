@@ -376,6 +376,7 @@ Major bugs:
 	loading/storing. In particular, floats seem to be saved as ints. I'm still
 	looking into this.
 - deep() bombs on some trees (nested arrays). Fix imminent.
+- impending inevitable showdown with Promises. Thinking caps required.
 
 See also the TODO list on top of `lib/xacto.js`
 

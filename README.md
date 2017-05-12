@@ -93,7 +93,8 @@ figure out where you are in `collection`. It is an array of indices.
 ```
 > let X=require('../xacto')();
 > let z=['tom',23,'bob',function(){return 999}];
-> let z1=X.deep(z,function(s){return s.toUpperCase()},{type:'string'});
+> let myfun=function(s){return s.toUpperCase()};
+> let z1=X.deep(z,myfun,{type:'string'});
 > z1
 [ 'TOM', 23, 'BOB', [Function] ]
 ```
@@ -148,18 +149,26 @@ For arrays: returns an array of `f(x[i],i,opts)` for each item in x.
 > X.each(range(1, 10+1), function(x){return x*3})
 [ 3, 6, 9, 12, 15, 18, 21, 24, 27, 30 ]
 ```
-For objects and Maps: returns `{k:f(x[k],k,opts), j:f(x[j],j,opts), ...}` 
+
+For objects and Maps, `each` preservese keys. It returns `{k:f(x[k],k,opts), j:f(x[j],j,opts), ...}`:
+
 ```
-> X.each({name:'Arca',species:'super cute pomeranian'},function(x){return x.toUpperCase()})
+> let rec={name:'Arca',species:'super cute pomeranian'};
+> X.each(rec, function(x){return x.toUpperCase()})
 { name: 'ARCA', species: 'SUPER CUTE POMERANIAN' }
 ```
-For tables.. starting from a CSV, as a string:
+
+`each` also works for tables. Starting from a CSV, as a string, just apply some columns to the output:
 ```
-> let tbl=X.imp("tom,38,human\narca,4,dog\ntyler,4,human","csv",false,{tableCols:{name:'string',age:'int',species:'string'}});
+> let cols={name:'string',age:'int',species:'string'};
+> let tblConf={tableCols:cols};
+> let tbl=X.imp("tom,38,human\narca,4,dog\ntyler,4,human","csv",false,tblConf);
 > tbl.each(function(row){return row.age*2})
 [ 76, 8, 8 ]
 ```
-In the case of tables specifically, you can specify the column name instead of a function:
+In the case of tables specifically, when using `each`, you can specify the
+column name instead of a function:
+
 ```
 > X.each(tbl, 'age')
 [38, 4, 4]
@@ -259,13 +268,16 @@ Return the lower of m and n
 
 ### proj(func, x?, y?, z?)
 
-Similar to currying. Returns a version of `func` with arguments already applied. Use
-undefined to indicate an empty value that must be applied when calling the resulting
-function.
+Project arguments `x`, `y`, and/or `z` onto function `func`. Returns a new function.
+
+Similar to currying. Returns a version of `func` with arguments already
+applied. Use undefined to indicate an empty value that must be applied when
+calling the resulting function.
 
 ```
 > const X=require('./xacto')();
-> const f=X.proj(function(a, b, c){ return 'Hello '+a+', '+b+', '+c }, 'Tom', undefined, 'Tyler')
+> const pointlessfunc=function(a, b, c){ return 'Hello '+a+', '+b+', '+c },
+> const f=X.proj(pointlessfunc,'Tom', undefined, 'Tyler')
 > f
 [Function: bound ]
 > f('Arca')

@@ -156,7 +156,7 @@ For objects and Maps: returns `{k:f(x[k],k,opts), j:f(x[j],j,opts), ...}`
 For tables.. starting from a CSV, as a string:
 ```
 > let tbl=X.imp("tom,38,human\narca,4,dog\ntyler,4,human","csv",false,{tableCols:{name:'string',age:'int',species:'string'}});
-> tbl.each(function(row){return age*2})
+> tbl.each(function(row){return row.age*2})
 [ 76, 8, 8 ]
 ```
 In the case of tables specifically, you can specify the column name instead of a function:
@@ -185,7 +185,7 @@ Transform dictionaries with lists of values into flattened dictionaries.
 > X.flip(z)
 [ { name: 'tom', age: 38 },
   { name: 'arca', age: 28 },
-	{ name: 'tyler', age: 4 } ]
+  { name: 'tyler', age: 4 } ]
 ```
 
 ### key(value) 

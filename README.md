@@ -150,7 +150,7 @@ For arrays: returns an array of `f(x[i],i,opts)` for each item in x.
 [ 3, 6, 9, 12, 15, 18, 21, 24, 27, 30 ]
 ```
 
-For objects and Maps, `each` preservese keys. It returns `{k:f(x[k],k,opts), j:f(x[j],j,opts), ...}`:
+For objects and Maps, `each` preserves keys. It returns `{k:f(x[k],k,opts), j:f(x[j],j,opts), ...}`:
 
 ```
 > let rec={name:'Arca',species:'super cute pomeranian'};
@@ -376,6 +376,8 @@ Xacto' file handling features come in the form of two functions: `load` and `sav
 > X.assert(X.equal(myData,myData2),"ugh")
 ```
 
+TODO write this
+
 ### Open the database
 
 Xacto databases live in their own folder.
@@ -409,12 +411,70 @@ handy in some situations) or via a table reference.
 	X.sel('students', {name:'Tom'})
 	students.sel({age:function(a){return a < 10;})
 ```
+TODO query capabilities in detail, exec()
 
 ### Update log
 
+When you create a table, you can supply a list of "backends" that are attached to it. These are like plugins or storage engines. 
+
+One of them is the logger. This will record all `ins` and `upd` operations performed against the table since the time it was created.
+
+It has a variety of options. To start, an example, with all options specified:
+
 ```
-> X.table('recipes',{id:'int',title:'string',ingredients:'any'},[X.mem, X.logger])
+> let logopts={
+		replay:true,
+		flush:{
+			time:60 * 1000,
+			rows:100
+		},
+		rotate:1,
+		interval:2 * 1000,
+		unlink:false,
+		verbose:true
+	};
+> X.table('recipes',{id:'int',title:'string',ingredients:'any'},[X.mem, X.logger(logopts)])
 ```
+
+Use `verbose:true` to see debugging information about the logger's behavior.
+This is recommended when in development. You don't want to have any blank areas
+in your understanding of your database's on-disk state.
+
+When you first initialize the table and its associated logger, `replay:true` will
+request it replays existing logs. If you'd like to do this on your own, you can use
+`X.logger.replay()`.
+
+To replay it will scan `$HOME/*.log.json` for log files. If it finds one, it
+will apply its contents to the table. These are done as synchronous operations
+and may slow the start of your app if the logs are numerous. You can set
+`unlink:true` to remove each log file as its consumed, but you'll need to
+save/reload your initial table state some other way if you want to persist data
+across many executions of your program.
+
+Information about what logs were loaded with `replay` can be accessed via the
+array `X.logger.logStats`. 
+
+After starting, the logger runs every `interval` seconds (2 seconds by
+default). If you set `interval` to 0, it won't run, but you can run it manually
+with `X.logger.check()`. 
+
+Each time it runs, it examines the amount of items in its update log, and when
+it last saved its state to disk. If it's more than `flush.rows` OR if it's been
+longer than `flush.time` since the log was written to disk, it will save the
+log as `$HOME/$TIME.log.json`.
+
+The time values used here (including in the log file name) have a millisecond
+resolution as per JavaScript conventions.
+
+If you want to log everything and never risk losing an update, set `flush.rows`
+to 1. 
+
+Please note that once the logger is operational your script will have pending
+timeouts and thus will not exit after finishing execution. 
+
+If you don't want the logger to run on its own, you can set `interval` to 0,
+and then use `X.logger.flush()` to save state on your own schedule. Then your
+script will exit on its own correctly too.
 
 ## Bugs
 

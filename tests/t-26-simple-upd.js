@@ -10,7 +10,7 @@ X.assert(X.equal(emit(X.upd(z,[0,3],[10,10])), [10,2000,300,10]), 't-26-simple-u
 emit(z,'z2');
 
 z={a:1, b:10, c:1000};
-X.assert(X.equal(X.upd(z,'a',5),{a:5,b:10,c:1000}),'t-26-simple-upd 2');
+X.assert(X.equal(emit(X.upd(z,'a',5)),{a:5,b:10,c:1000}),'t-26-simple-upd 2');
 emit(z,'z3');
 
 emit('done');

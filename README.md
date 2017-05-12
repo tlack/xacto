@@ -146,7 +146,7 @@ other 12
 For arrays: returns an array of `f(x[i],i,opts)` for each item in x.
 
 ```
-> X.each(range(1, 10+1), function(x){return x*3})
+> X.each(X.range(1, 10+1), function(x){return x*3})
 [ 3, 6, 9, 12, 15, 18, 21, 24, 27, 30 ]
 ```
 
@@ -315,6 +315,7 @@ Return the first `n` items in `value`.
 Negative `n` will return items from the end of `value`.
 
 ```
+// Xacto currently pollutes globals, so you don't have to use X. in front of verb names
 > const r=range(0,10)
 > take(r,3)
 [0,1,2]
@@ -383,14 +384,14 @@ TODO write this
 Xacto databases live in their own folder.
 
 ```
-	var X=require('exacto');
-	// open database folder. existing database and logs will be automatically loaded.
-	X=X('./testdb/')
+> var X=require('exacto');
+> // open database folder. existing database and logs will be automatically loaded.
+> X=X('./testdb/')
 ```
 The first time you reference a table, you have to define its schema:
 
 ```
-	students=X.table('students',{id:'int',name:'string',age:'int'})
+> students=X.table('students',{id:'int',name:'string',age:'int'})
 ```
 	
 ### Insert (ins)
@@ -399,17 +400,17 @@ You can reference the table by a string of its name using `X.ins` (surprisingly
 handy in some situations) or via a table reference.
 
 ```
-	X.ins('students', {name:'Tom',age:38})
-	// alternative forms:
-	X.students.ins({name,'Arca',age:4*7})
-	students.ins({name:'Cricket',age:4})
+> X.ins('students', {name:'Tom',age:38})
+// alternative forms:
+> X.students.ins({name,'Arca',age:4*7})
+> students.ins({name:'Cricket',age:4})
 ```
 
 ### Query (sel)
 
 ```
-	X.sel('students', {name:'Tom'})
-	students.sel({age:function(a){return a < 10;})
+> X.sel('students', {name:'Tom'})
+> students.sel({age:function(a){return a < 10;})
 ```
 TODO query capabilities in detail, exec()
 
@@ -423,16 +424,16 @@ It has a variety of options. To start, an example, with all options specified:
 
 ```
 > let logopts={
-		replay:true,
-		flush:{
-			time:60 * 1000,
-			rows:100
-		},
-		rotate:1,
-		interval:2 * 1000,
-		unlink:false,
-		verbose:true
-	};
+ replay:true,
+ flush:{
+   time:60 * 1000,
+   rows:100
+ },
+ rotate:1,
+ interval:2 * 1000,
+ unlink:false,
+ verbose:true
+};
 > X.table('recipes',{id:'int',title:'string',ingredients:'any'},[X.mem, X.logger(logopts)])
 ```
 

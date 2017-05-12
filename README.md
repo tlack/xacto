@@ -488,6 +488,7 @@ Major bugs:
 	looking into this.
 - deep() bombs on some trees (nested arrays). Fix imminent.
 - impending inevitable showdown with Promises. Thinking caps required.
+- logger instances should be shared
 
 See also the TODO list on top of `lib/xacto.js`
 

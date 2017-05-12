@@ -101,6 +101,15 @@ figure out where you are in `collection`. It is an array of indices.
 This is useful for recursing deep into objects to find or manipulate specific
 values.
 
+### dict(keys, values) 
+
+Creates a keyed object (dictionary) from a list of keys and a list of values.
+
+```
+> X.dict(['name','age'],['tom',38])
+{name:'tom',age:38}
+```
+
 ### die(text)
 
 Prints text and exits with error code 1.
@@ -133,13 +142,27 @@ other 12
 
 ### each(x, f, opts)
 
-For arrays and tables: returns an array of `f(x[i],i,opts)` for each item in x.
+For arrays: returns an array of `f(x[i],i,opts)` for each item in x.
 
+```
+> X.each(range(1, 10+1), function(x){return x*3})
+[ 3, 6, 9, 12, 15, 18, 21, 24, 27, 30 ]
+```
 For objects and Maps: returns `{k:f(x[k],k,opts), j:f(x[j],j,opts), ...}` 
-
 ```
 > X.each({name:'Arca',species:'super cute pomeranian'},function(x){return x.toUpperCase()})
 { name: 'ARCA', species: 'SUPER CUTE POMERANIAN' }
+```
+For tables.. starting from a CSV, as a string:
+```
+> let tbl=X.imp("tom,38,human\narca,4,dog\ntyler,4,human","csv",false,{tableCols:{name:'string',age:'int',species:'string'}});
+> tbl.each(function(row){return age*2})
+[ 76, 8, 8 ]
+```
+In the case of tables specifically, you can specify the column name instead of a function:
+```
+> X.each(tbl, 'age')
+[38, 4, 4]
 ```
 
 ### equal(x, y)

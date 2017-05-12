@@ -16,7 +16,9 @@ Pretty new. Some glaring omissions. Don't trust with your important data just ye
 
 - JavaScript really sucks but we're stuck with it. I want to write JS that's as concise and meaningful as [Q by Kx](http://kx.com). 
 
-- One size does not fit all. I want to be able to make websites that have app-tuned customizable data stores. 
+- One size does not fit all. As my needs become more complex, I want to tune
+	how I store and scan my data. I want to be able to spawn mini-databases and
+	hybrids.
 
 - Every external dependency is a risk factor. Remove as many as possible. I
 	want to work without MySQL or Redis or 500mb of npms or anything but Node
@@ -300,7 +302,7 @@ of numbers to a function, generate test data, etc.
 ### sel(collection, predicate)
 
 Select the items in `collection` matching `predicate`. Works for most types.
-See querying docs below.
+See "Select" below.
 
 ### sum(array, nullvalue?)
 
@@ -357,9 +359,15 @@ Returns true if `value` is a function
 
 ### upd(collection, key, value)
 
-Updates `key` in `collection` with value.
+Updates `key` in `collection` with value. Works with tables, arrays, and objects.
 
-`key` can be an array of indices. Each will get `value`.
+For objects, key should be an array of strings.
+
+`key` can be an array of indices. `value` should be an array of the same size.
+
+### where(collection, predicate)
+
+Returns keys of `collection` that match `predicate`. See "Where" below.
 
 ### X.U
 
@@ -379,7 +387,7 @@ Xacto' file handling features come in the form of two functions: `load` and `sav
 
 TODO write this
 
-### Open the database
+### Create and open a database - X.table(name?, schema, backends?, options?)
 
 Xacto databases live in their own folder.
 
@@ -388,31 +396,62 @@ Xacto databases live in their own folder.
 > // open database folder. existing database and logs will be automatically loaded.
 > X=X('./testdb/')
 ```
-The first time you reference a table, you have to define its schema:
+The first time you reference a table, you have to define its schema. You can also give
+it a name.
 
 ```
-> students=X.table('students',{id:'int',name:'string',age:'int'})
+> students=X.table('students',{name:'string',age:'int',species:'string'})
 ```
-	
-### Insert (ins)
+
+If you don't give the table a name, you won't be able to refer to it by its string name
+elsewhere in your application.
+
+### Insert - ins(collection, item)
 
 You can reference the table by a string of its name using `X.ins` (surprisingly
 handy in some situations) or via a table reference.
 
 ```
-> X.ins('students', {name:'Tom',age:38})
-// alternative forms:
-> X.students.ins({name,'Arca',age:4*7})
-> students.ins({name:'Cricket',age:4})
+> X.ins('students', {name:'Tom',age:38,species:"Programmer"})
+> // alternative forms:
+> X.tbl.students.ins({name,'Arca',age:4,species:"Elegant Pomeranian"})
+> students.ins({name:'Tyler',age:4,species:"Lil Bebe"})
 ```
 
-### Query (sel)
+### Select rows - sel(collection, predicate?)
+
+Search for values matching `predicate` or find rows where `predicate(row)` returns true.
+
+If you omit the predicate, will return all values.
+
+Always returns an array. The array is empty if no match is found.
+
+```
+> // generate 1000 numbers from 0..100 and find those that are 42
+> X.sel([X.randN(100, 1000)], 42) 
+> X.sel('students', {name:'Tom'})
+[{name:"Tom",age:38,species:"Programmer"}]
+> students.sel({age:function(a){return a < 10;})
+[{name:"Arca",age:4,species:"Elegant Pomeranian"},
+ {name:"Tyler",age:4,species:"Lil Bebe"}]
+```
+TODO query capabilities in detail
+
+### Query - where(collection, predicate?)
+
+`where` is used to search for values much like `sel`. `where` returns the indices that match the predicate
+instead of the rows or matching values themselves.
+
+`where` always returns an array.
 
 ```
 > X.sel('students', {name:'Tom'})
+[0]
 > students.sel({age:function(a){return a < 10;})
+[1,2]
 ```
-TODO query capabilities in detail, exec()
+
+Internally, `sel` often uses `where` to perform its searches.
 
 ### Update log
 
@@ -420,7 +459,9 @@ When you create a table, you can supply a list of "backends" that are attached t
 
 One of them is the logger. This will record all `ins` and `upd` operations performed against the table since the time it was created.
 
-It has a variety of options. To start, an example, with all options specified:
+If you don't want to maintain an update log, you can save your table whenever you want with `table.save('whatever.json')`.
+
+The logger has a variety of options. To start, an example, with all options specified:
 
 ```
 > let logopts={
@@ -445,7 +486,7 @@ When you first initialize the table and its associated logger, `replay:true` wil
 request it replays existing logs. If you'd like to do this on your own, you can use
 `X.logger.replay()`.
 
-To replay it will scan `$HOME/*.log.json` for log files. If it finds one, it
+To replay it will scan `XHOME/*.log.json` for log files. If it finds one, it
 will apply its contents to the table. These are done as synchronous operations
 and may slow the start of your app if the logs are numerous. You can set
 `unlink:true` to remove each log file as its consumed, but you'll need to
@@ -462,7 +503,7 @@ with `X.logger.check()`.
 Each time it runs, it examines the amount of items in its update log, and when
 it last saved its state to disk. If it's more than `flush.rows` OR if it's been
 longer than `flush.time` since the log was written to disk, it will save the
-log as `$HOME/$TIME.log.json`.
+log as `XHOME/$TIME.log.json`.
 
 The time values used here (including in the log file name) have a millisecond
 resolution as per JavaScript conventions.

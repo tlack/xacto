@@ -490,6 +490,16 @@ type of value's length.
 
 Internally, `sel` often uses `where` to perform its searches.
 
+### Update - upd(collection, predicate, value)
+
+Update items in `collection` matching `predicate`.
+
+`predicate` may be a function or in the case of a table a record/object.
+
+```
+> X.upd('students', {name:'Tom'}, {age:0}); // to be young again
+```
+
 ### Update log
 
 When you create a table, you can supply a list of "backends" that are attached to it. These are like plugins or storage engines. 

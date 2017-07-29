@@ -500,6 +500,8 @@ Update items in `collection` matching `predicate`.
 > X.upd('students', {name:'Tom'}, {age:0}); // to be young again
 ```
 
+`upd()` can also be used for non-table types.
+
 ### Update log
 
 When you create a table, you can supply a list of "backends" that are attached to it. These are like plugins or storage engines. 

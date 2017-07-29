@@ -214,6 +214,15 @@ Return the `index`th item in `collection`. `index` can also be an array. Works f
 Returns the Xacto handler for a given filename's extension. Mostly used
 by `load()` and `save()`.
 
+### has(collection, value)
+
+If `collection` is an object, returns whether or not `value` is one of its properties.
+
+If `collection` is an array or other container, returns whether or not `value` is one of
+its members.
+
+Error otherwise.
+
 ### head(value)
 
 Returns the first item in value
@@ -245,6 +254,25 @@ If value is an object with a 'len' member, returns `value.len()`.
 If value is an object with a 'length' member or a string, returns value.length
 
 If value is a dictionary, return the number of keys
+
+### load(resource,callback?,options?)
+
+Interpret `resource` and retrieve it, calling `callback(err,data)`
+when done.
+
+`resource` is generally a filename. You can define your own handlers to, say,
+automatically decode `.json` files when loaded. See the *Resources* section
+below for more.
+
+This callback style (error as first arg, result as second) is meant to emulate
+the Node.js built in API. The built-in filesystem extension handlers allow you
+to supply null as `callback` and invoke their synchronous APIs. This is handy
+during server startup and to avoid callback hell when you can spare the
+performance.
+
+The meaning of `options` is specific to the resource handler.
+
+See also the converse of this function: `save(resource,data,callback?)`.
 
 ### jd(value)
 
@@ -303,6 +331,12 @@ of numbers to a function, generate test data, etc.
 
 Select the items in `collection` matching `predicate`. Works for most types.
 See "Select" below.
+
+### str(x) 
+
+Attempt to stringify `x`. Simple values like numbers become strings. Objects
+with a `toString` method, such as a `Buffer`, have it its results returned.
+Container types are returned as JSON.
 
 ### sum(array, nullvalue?)
 
@@ -375,7 +409,7 @@ Shortcut for undefined. I hate typing.
 
 ## File and Database API
 
-### File handling
+### File handling, extensions, resources
 
 Xacto' file handling features come in the form of two functions: `load` and `save`.
 
@@ -385,7 +419,8 @@ Xacto' file handling features come in the form of two functions: `load` and `sav
 > X.assert(X.equal(myData,myData2),"ugh")
 ```
 
-TODO write this
+See `lib/filehandlers.js` for a sense of how these are constructed while
+these negligent docs remain unfinished.
 
 ### Create and open a database - X.table(name?, schema, backends?, options?)
 

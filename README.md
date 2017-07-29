@@ -459,7 +459,7 @@ Search for values matching `predicate` or find rows where `predicate(row)` retur
 
 If you omit the predicate, will return all values.
 
-Always returns an array. The array is empty if no match is found.
+Always returns an array of records. The array is empty if no match is found.
 
 ```
 > // generate 1000 numbers from 0..100 and find those that are 42
@@ -475,16 +475,18 @@ TODO query capabilities in detail
 ### Query - where(collection, predicate?)
 
 `where` is used to search for values much like `sel`. `where` returns the indices that match the predicate
-instead of the rows or matching values themselves.
-
-`where` always returns an array.
+instead of the rows or matching values themselves. In other words, `where` returns an array of integers, but
+`sel` returns an array of records/objects.
 
 ```
-> X.sel('students', {name:'Tom'})
+> X.where('students', {name:'Tom'})
 [0]
-> students.sel({age:function(a){return a < 10;})
+> students.where({age:function(a){return a < 10;})
 [1,2]
 ```
+
+`where` always returns an array. It will be empty if no matches are found. You can use `X.len()` to check any
+type of value's length.
 
 Internally, `sel` often uses `where` to perform its searches.
 

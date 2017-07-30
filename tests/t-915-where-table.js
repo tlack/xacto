@@ -1,3 +1,5 @@
+console.log(JSON.stringify(process.memoryUsage()));
+
 const X=require('../xacto')();
 
 let t=X.table('barf',{a:'string',b:'int'});
@@ -13,3 +15,4 @@ var q=t.where({b:99});
 X.assert(X.equal(q,[33]),'4 where eq 99');
 emit('done')
 
+console.log(JSON.stringify(process.memoryUsage()));

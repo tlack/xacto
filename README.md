@@ -168,8 +168,8 @@ For objects and Maps, `each` preserves keys. It returns `{k:f(x[k],k,opts), j:f(
 > tbl.each(function(row){return row.age*2})
 [ 76, 8, 8 ]
 ```
-In the case of tables specifically, when using `each`, you can specify the
-column name instead of a function:
+In the case of arrays of objects or tables, `each` allows you to specify the
+column name instead of a function to extract all values of that column:
 
 ```
 > X.each(tbl, 'age')

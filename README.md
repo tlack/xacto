@@ -186,7 +186,8 @@ Synonym for head
 
 ### flip(value)
 
-Transform dictionaries with lists of values into flattened dictionaries.
+Transform dictionaries with arrays of values (like `{a:[1,2,3],b:[4,5,6]}`) into arrays of flattened
+dictionaries (like `[{a:1,b:4},{a:2,b:5},{a:3,b:6}]`).
 
 ```
 > const X=require('./xacto')()
@@ -229,9 +230,14 @@ Returns the first item in value
 
 ### ins(collection, value)
 
-Appends `value` to `collection`
+Appends `value` to `collection`. This works for tables, arrays, etc.
 
-This works for tables, arrays, etc.
+If `collection` is an object, and it has a member named `ins` that is a
+function, this will return `collection.ins(x)`.
+
+If `collection` is an object and `value` is an object each of the values in
+`value` will be set in `collection`, overriding previous values with the same
+keys.
 
 ### inter(x, y)
 
@@ -401,15 +407,25 @@ For objects, key should be an array of strings.
 
 ### where(collection, predicate)
 
-Returns keys of `collection` that match `predicate`. See "Where" below.
+Returns keys of `collection` that match `predicate`. 
+
+If `collection` is something like an array and `predicate` is a function, `where` returns the indices where the function returns
+true:
+
+```
+> X.where([1, 2, 3, 4, 5],function(x){return x%2==0})
+[1,3]
+```
+
+If `predicate` is omitted, an array of all of the elements indices is returned.
+
+For usage with tables, see "Where" below.
 
 ### X.U
 
 Shortcut for undefined. I hate typing.
 
-## File and Database API
-
-### File handling, extensions, resources
+## File handling
 
 Xacto' file handling features come in the form of two functions: `load` and `save`.
 
@@ -422,9 +438,12 @@ Xacto' file handling features come in the form of two functions: `load` and `sav
 See `lib/filehandlers.js` for a sense of how these are constructed while
 these negligent docs remain unfinished.
 
+## In-memory databases
+
 ### Create and open a database - X.table(name?, schema, backends?, options?)
 
-Xacto databases live in their own folder.
+Xacto databases live in their own folder which is specified when the Xacto instance
+is created.
 
 ```
 > var X=require('exacto');
@@ -439,7 +458,8 @@ it a name.
 ```
 
 If you don't give the table a name, you won't be able to refer to it by its string name
-elsewhere in your application.
+elsewhere in your application. Using a string to refer to a table is useful because you
+don't have to pass it around to all of your code that may need to do data manipulation.
 
 ### Insert - ins(collection, item)
 
@@ -452,6 +472,8 @@ handy in some situations) or via a table reference.
 > X.tbl.students.ins({name,'Arca',age:4,species:"Elegant Pomeranian"})
 > students.ins({name:'Tyler',age:4,species:"Lil Bebe"})
 ```
+
+See also the full explanation of `ins()` above.
 
 ### Select rows - sel(collection, predicate?)
 
@@ -472,7 +494,7 @@ Always returns an array of records. The array is empty if no match is found.
 ```
 TODO query capabilities in detail
 
-### Query - where(collection, predicate?)
+### Query for matches - where(collection, predicate?)
 
 `where` is used to search for values much like `sel`. `where` returns the indices that match the predicate
 instead of the rows or matching values themselves. In other words, `where` returns an array of integers, but
@@ -500,7 +522,7 @@ Update items in `collection` matching `predicate`.
 > X.upd('students', {name:'Tom'}, {age:0}); // to be young again
 ```
 
-`upd()` can also be used for non-table types.
+`upd()` can also be used for non-table types. See the `upd` section above for more.
 
 ### Update log
 

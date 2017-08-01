@@ -1,2 +1,2 @@
 let X=require('../xacto')('./testdb/');
-emit('done')
+X.emit('done')

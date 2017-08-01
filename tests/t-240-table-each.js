@@ -9,9 +9,9 @@ for(let i=0; i<NROWS; i++) {
 	t.ins({a:n, b:X.choice(['tom','dick','hairy'])});
 }
 
-emit(total);
+X.emit(total);
 
-X.assert(emit(X.sum(t.each(function(x,i){ return x.a; })), 'sum') == total, 't 240 table each 0');
+X.assert(X.emit(X.sum(t.each(function(x,i){ return x.a; })), 'sum') == total, 't 240 table each 0');
 
-emit('done');
+X.emit('done');
 

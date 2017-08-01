@@ -13,6 +13,6 @@ var q=t.where({b:0});
 X.assert(X.equal(q,[0]),'3 where eq 0');
 var q=t.where({b:99});
 X.assert(X.equal(q,[33]),'4 where eq 99');
-emit('done')
+X.emit('done')
 
 console.log(JSON.stringify(process.memoryUsage()));

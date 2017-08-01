@@ -5,4 +5,4 @@ X.assert(
 		X.flip(z),
 		[{name:'tom',age:38},{name:'arca',age:4*7},{name:'tyler',age:4}]
 	), 'flip');
-emit('done');
+X.emit('done');

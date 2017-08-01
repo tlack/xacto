@@ -30,16 +30,16 @@ X.time(function(n) {
 console.log(X.len(grp),NROWS);
 X.assert(X.equal(X.sel(grp), grp.sel()), 'enumeration double sel');
 console.log(X.sel(grp));
-emit(X.sel(grp,X.choice(testdata)),'random sel');
+X.emit(X.sel(grp,X.choice(testdata)),'random sel');
 if(X.len(grp)!=NROWS) die('enumeration len');
 
 X.time(function(n) {
 	let name=X.choice(testdata);
-	let z=emit(grp.sel(name),'search name');
+	let z=X.emit(grp.sel(name),'search name');
 	// console.log(z);
 	// console.log(len(grp), z.length, X.je(z));
 	if(z.length < NROWS/NTESTRECS/2) die('weird length: '+(z.toString()));
 }, 1, 'exec 1');
 
-emit('done');
+X.emit('done');
 

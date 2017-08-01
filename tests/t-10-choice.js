@@ -4,5 +4,5 @@ X.assert(X.member(z, X.rand(100)), 'choice 1');
 X.assert(X.member(z, X.rand(100)), 'choice 2');
 X.assert(X.member(z, X.rand(100)), 'choice 3');
 X.assert(X.member(z, X.rand(100)), 'choice 4');
-emit('done');
+X.emit('done');
 

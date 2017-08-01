@@ -8,7 +8,7 @@ for (i=0; i<NROWS; i++)
 	t.ins({a:X.choice(['tom','arca','tyler']),b:X.rand(50),c:Date.now().toString()})
 
 X.assert(t.sel({b:42}).length>0,'t-mem-table 0');
-emit('done');
+X.emit('done');
 
 
 

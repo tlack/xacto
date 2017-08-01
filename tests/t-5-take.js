@@ -21,5 +21,5 @@ X.assert(X.equal(X.drop(L,-4),[3,6,9]),'drop 1');
 X.assert(X.drop('abcdef',3)=='def','drop string 1');
 X.assert(X.drop('abcdef',-3)=='abc','drop string 2');
 
-emit('done');
+X.emit('done');
 

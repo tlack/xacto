@@ -67,11 +67,11 @@ const NROWS = 1000 * 1000 * 10;
 let i;
 let r=[];
 
-emit(NROWS, 'array size');
-emit(NBUILDS, 'creations');
-emit(NREPS, 'search reps');
+X.emit(NROWS, 'array size');
+X.emit(NBUILDS, 'creations');
+X.emit(NREPS, 'search reps');
 
-time(function() {
+X.time(function() {
 	let rr=[];
 	for (i=0; i<NROWS; i++) rr.push(X.rand(2));
 	r=rr;
@@ -79,22 +79,22 @@ time(function() {
 
 for (i=0; i<10; i++) {
 	let n=X.rand(NROWS);
-	emit(r[n], n);
+	X.emit(r[n], n);
 }
 
-time(function() {
+X.time(function() {
 	let rr=[];
 	for (i=0; i<NROWS; i++) if(r[i] === 1) rr.push(i);
 	return len(rr);
 }, NREPS, 'search ===');
 
-time(function() {
+X.time(function() {
 	let rr=[];
 	for (i=0; i<NROWS; i++) if(r[i] == 1) rr.push(i);
 	return len(rr);
 }, NREPS, 'search ==');
 
-time(function() {
+X.time(function() {
 	let rr=[];
 	for (i=0; i<NROWS; i++) if(r[i]) rr.push(i);
 	return len(rr);

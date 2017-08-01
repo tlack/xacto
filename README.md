@@ -593,15 +593,16 @@ script will exit on its own correctly too.
 
 Major bugs:
 
-- currently pollutes globals. trying to find a better structure
+~~- currently pollutes globals. trying to find a better structure~~
 - enumerations (columns grouped by unique values) do not currently work.
-- logger needs more testing and a freshening up
+- logger needs a way to remove logs and take snapshots or some combination
+	thereof. logger should be some kind of quasi-global behavior, rather than
+	table specific. 
 - there's something odd about converting some TypedArrays to buffers for
 	loading/storing. In particular, floats seem to be saved as ints. I'm still
 	looking into this.
 - deep() bombs on some trees (nested arrays). Fix imminent.
 - impending inevitable showdown with Promises. Thinking caps required.
-- logger instances should be shared
 
 See also the TODO list on top of `lib/xacto.js`
 
